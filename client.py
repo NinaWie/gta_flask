@@ -19,10 +19,12 @@ def test_project_coords():
 # TODO: task 3
 def test_project_any_coords():
     json_data_3 = [[47.324, 8.342],[47.37668,8.54862]]
-    r_3 = requests.post(host_link + "project_any_coords", json=json_data_3)
+    # Dieser Abschnitt hier simuliert den Browser Inputfläche, deshalb hier den Browserinput definieren
+    r_3 = requests.post(host_link + "project_any_coords?crs=2056", json=json_data_3)
     print(r_3.json())
 
 # TODO: test task 3
 
 if __name__ == "__main__":
+    # Welche der Funktionen ausgeführt wird von client.py
     test_project_any_coords()

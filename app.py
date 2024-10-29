@@ -80,23 +80,40 @@ def proj_coord():
     proj_test_coords = pyproj.transform(4326, 2056, lat, lon)
     output_coords = f"The position is {proj_test_coords}"
     return jsonify(output_coords)
+
 # TODO TASK 3
 @app.route("/project_any_coords", methods = ["POST", "GET"])
 @cross_origin()
 def proj_any_coord():
     #Indem durch app.route ein Link definiert wird, wird der request von test_coords gespeichert und durch request runtergeladen
+    # Da via client.py ausgeführt wird, muss ich im client.py die browser variabeln eintippen
     coords_list = request.get_json(force=True)
     new_coords = []
     print("Koordinaten im WGS84: ", coords_list)
-    input_crs = int(request.args.get("crs", 2056))
+    input_crs = int(request.args.get("crs", 4326))
     for coords in coords_list:
         lat, lon = coords
         proj_coords = pyproj.transform(4326, input_crs, lat, lon)
         new_coords.append(proj_coords)
     out_coords = f"The position is {new_coords} in {input_crs}"
     return jsonify(out_coords)
-# TODO TASK 4
 
+# TODO TASK 4
+@app.route("/decrease_value", methods=["GET"])
+@cross_origin()
+def decrease_value():
+    "Initial value"
+    sub = int(request.args.get("init", 20))
+    response_sub = jsonify(sub)
+    return response_sub
+
+@app.route("/increase_value", methods=["GET"])
+@cross_origin()
+def decrease_value():
+    "Initial value"
+    add = int(request.args.get("init", 20))
+    response_add = jsonify(add)
+    return response_add
 
 # TODO TASK 5
 @app.route("/compute_mean", methods=["GET"])

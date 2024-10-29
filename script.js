@@ -39,10 +39,24 @@ function demo_post_ajax() {
 }
 
 // TODO TASK 4 - call Python backend for decreasing or increasing the value
-// function decrease_value() {
-//     ...
-// }
+function decrease_value() {
+    const url = 'http://localhost:8989/decrease_value'
+    fetch(url)
+        .then(response_sub => response_sub.json())
+        .then(json => {
+            console.log(json);
+            minus_num= json - 1
+            document.getElementById("sub").innerHTML = JSON.stringify(minus_num)
+        })
+}
 
-// function increase_value() {
-//     ...
-// }
+function increase_value() {
+    const url = 'http://localhost:8989/increase_value'
+    fetch(url)
+        .then(response_add => response_add.json())
+        .then(json => {
+            console.log(json);
+            add_num = json + 1
+            document.getElementById("add").innerHTML = JSON.stringify(add_num)
+        })
+}
