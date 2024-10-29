@@ -60,12 +60,26 @@ def using_post():
 
 
 # TODO: TASK 1
-# @app.route("/round_float", methods=["GET"])
-# def round_float():
-#     ...
+@app.route("/round_float", methods=["GET"])
+def round_float():
+    # Da ein float gefragt ist type casting wir ein float!!! Sonst wird es eben string sein
+    input_float = float(request.args.get("floatnum", 1))
+    print(f"Received argument: {input_float}")
+    round_float= np.round(input_float,2)
+    output_float = f"The rounded number is {round_float}"
+    return jsonify(output_float)
 
 # TODO: TASK 2
-
+@app.route("/project_coords", methods = ["POST"])
+@cross_origin()
+def proj_coord():
+    #Indem durch app.route ein Link definiert wird, wird der request von test_coords gespeichert und durch request runtergeladen
+    test_coords = request.get_json(force=True)
+    print("Koordinaten im WGS84: ", test_coords)
+    lat, lon = test_coords
+    proj_test_coords = pyproj.transform(4326, 2056, lat, lon)
+    output_coords = f"The position is {proj_test_coords}"
+    return jsonify(output_coords)
 # TODO TASK 3
 
 # TODO TASK 4
