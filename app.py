@@ -81,7 +81,20 @@ def proj_coord():
     output_coords = f"The position is {proj_test_coords}"
     return jsonify(output_coords)
 # TODO TASK 3
-
+@app.route("/project_any_coords", methods = ["POST", "GET"])
+@cross_origin()
+def proj_any_coord():
+    #Indem durch app.route ein Link definiert wird, wird der request von test_coords gespeichert und durch request runtergeladen
+    coords_list = request.get_json(force=True)
+    new_coords = []
+    print("Koordinaten im WGS84: ", coords_list)
+    input_crs = int(request.args.get("crs", 2056))
+    for coords in coords_list:
+        lat, lon = coords
+        proj_coords = pyproj.transform(4326, input_crs, lat, lon)
+        new_coords.append(proj_coords)
+    out_coords = f"The position is {new_coords} in {input_crs}"
+    return jsonify(out_coords)
 # TODO TASK 4
 
 
