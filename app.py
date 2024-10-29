@@ -90,6 +90,15 @@ def project_to_crs():
     return jsonify({"output": new_coords})
 
 # TODO TASK 4
+@app.route("/increase", methods=["GET"])
+def increase():
+    num = int(request.args.get("num"))
+    return jsonify(num+1)
+
+@app.route("/decrease", methods=["GET"])
+def decrease():
+    num = int(request.args.get("num"))
+    return jsonify(num-1)
 
 
 # TODO TASK 5
