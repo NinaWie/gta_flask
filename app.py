@@ -60,15 +60,45 @@ def using_post():
 
 
 # TODO: TASK 1
-# @app.route("/round_float", methods=["GET"])
-# def round_float():
-#     ...
+@app.route("/round_float", methods=["GET"])
+def round_float():
+    input_float = float(request.args.get("value", 1))
+    print(f"Received float: {input_float}")
+    output_float = np.round(input_float, 2)
+    return jsonify({"output": output_float})
 
 # TODO: TASK 2
 
+@app.route("/project_coords", methods=["POST"])
+def project_coords():
+    coords = request.get_json(force=True)
+    print("received:", coords)
+    lat, lon = coords
+    print("lat, lon are", lat, lon, "of type", type(lat), type(lon))
+    new_coords = pyproj.transform(4326, 2056, lat, lon)
+    print("converted to:", new_coords)
+    return jsonify({"output": new_coords})
+
 # TODO TASK 3
+@app.route("/project_to_crs", methods=["POST"])
+def project_to_crs():
+    coords = request.get_json(force=True)
+    print("received:", coords)
+    crs, lat, lon = coords
+    new_coords = pyproj.transform(4326, crs, lat, lon)
+    print("converted to:", new_coords)
+    return jsonify({"output": new_coords})
 
 # TODO TASK 4
+@app.route("/increase", methods=["GET"])
+def increase():
+    num = int(request.args.get("num"))
+    return jsonify(num+1)
+
+@app.route("/decrease", methods=["GET"])
+def decrease():
+    num = int(request.args.get("num"))
+    return jsonify(num-1)
 
 
 # TODO TASK 5
