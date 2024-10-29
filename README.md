@@ -2,5 +2,4 @@
 
 This is our cool project
 
-
-I added some more stuff here
+Konflikt oh nein schlimm!!

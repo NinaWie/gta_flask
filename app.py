@@ -7,6 +7,11 @@ from flask_cors import CORS, cross_origin  # needs to be installed via pip insta
 
 from backend import get_mean_value_from_table
 
+def new_func():
+    print("hoi")
+
+new_func()
+
 app = Flask(__name__)
 CORS(app, origins=["*", "null"])  # allowing any origin as well as localhost (null)
 
