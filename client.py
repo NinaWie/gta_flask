@@ -21,4 +21,4 @@ def test_project_coords():
 # TODO: test task 3
 
 if __name__ == "__main__":
-    test_using_post()
+    test_project_coords()
