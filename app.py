@@ -59,15 +59,25 @@ def using_post():
     return jsonify(output_text)
 
 
-# TODO: TASK 1
 @app.route("/round_float", methods=["GET"])
 def round_float():
-    input_float = float(request.args.get("value", 1))
-    print(f"Received float: {input_float}")
-    output_float = np.round(input_float, 2)
-    return jsonify({"output": output_float})
+    input_value = float(request.args.get("num", 1))
+    print(f"Received argument: {input_value}")
+    new_value = round(input_value,2)
+    return jsonify({"output": new_value})
 
 # TODO: TASK 2
+@app.route("/project_coords", methods=["POST"])
+@cross_origin()
+def project_coords():
+    coords =  request.get_json(force=True)
+    print(coords)
+    transformer = pyproj.Transformer.from_crs("EPSG:4326", "EPSG:2056")
+    projected_x, projected_y = transformer.transform(coords[0], coords[1])
+    projected_coords = [projected_x, projected_y]
+    
+    return jsonify(projected_coords)
+
 
 @app.route("/project_coords", methods=["POST"])
 def project_coords():
@@ -89,30 +99,51 @@ def project_to_crs():
     print("converted to:", new_coords)
     return jsonify({"output": new_coords})
 
-# TODO TASK 4
-@app.route("/increase", methods=["GET"])
-def increase():
-    num = int(request.args.get("num"))
-    return jsonify(num+1)
+@app.route("/project_coords_extended", methods=["GET","POST"])
+@cross_origin()
+def project_coords_extended():
+    coords =  request.get_json(force=True)
+    crs = request.args.get("crs", 4326)
+    transformer = pyproj.Transformer.from_crs("EPSG:4326", f"EPSG:{crs}")
+    projected_x, projected_y = transformer.transform(coords[0], coords[1])
+    projected_coords = [projected_x, projected_y]
+    
+    return jsonify(projected_coords)
 
-@app.route("/decrease", methods=["GET"])
-def decrease():
-    num = int(request.args.get("num"))
-    return jsonify(num-1)
+
+@app.route('/increase_value', methods=['GET'])
+def increase_value():
+    # Get the current value from the request arguments and increase it
+    current_value = int(request.args.get('value', 0))
+    new_value = current_value + 1
+    response = jsonify({"value": new_value})
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
+
+@app.route('/decrease_value', methods=['GET'])
+def decrease_value():
+    # Get the current value from the request arguments and decrease it
+    current_value = int(request.args.get('value', 0))
+    new_value = current_value - 1
+    response = jsonify({"value": new_value})
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
+
+
 
 
 # TODO TASK 5
 @app.route("/compute_mean", methods=["GET"])
 def compute_mean():
     # retrieve column name from the request arguments
-    # TODO
+    col_name = str(request.args.get("column_name", "value"))
 
     # call backend
-    # TODO
+    result = get_mean_value_from_table(col_name)
 
-    # return results (mean value) as a json
-    # TODO
-    pass
+    # save results in a suitable format to output
+    result = jsonify({"mean": result})
+    return result
 
 
 if __name__ == "__main__":
