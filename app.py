@@ -59,8 +59,6 @@ def using_post():
     return jsonify(output_text)
 
 
-# TODO: TASK 1
-
 @app.route("/round_float", methods=["GET"])
 def round_float():
     input_value = float(request.args.get("num", 1))
@@ -81,7 +79,25 @@ def project_coords():
     return jsonify(projected_coords)
 
 
+@app.route("/project_coords", methods=["POST"])
+def project_coords():
+    coords = request.get_json(force=True)
+    print("received:", coords)
+    lat, lon = coords
+    print("lat, lon are", lat, lon, "of type", type(lat), type(lon))
+    new_coords = pyproj.transform(4326, 2056, lat, lon)
+    print("converted to:", new_coords)
+    return jsonify({"output": new_coords})
+
 # TODO TASK 3
+@app.route("/project_to_crs", methods=["POST"])
+def project_to_crs():
+    coords = request.get_json(force=True)
+    print("received:", coords)
+    crs, lat, lon = coords
+    new_coords = pyproj.transform(4326, crs, lat, lon)
+    print("converted to:", new_coords)
+    return jsonify({"output": new_coords})
 
 @app.route("/project_coords_extended", methods=["GET","POST"])
 @cross_origin()
@@ -94,7 +110,7 @@ def project_coords_extended():
     
     return jsonify(projected_coords)
 
-# TODO TASK 4
+
 @app.route('/increase_value', methods=['GET'])
 def increase_value():
     # Get the current value from the request arguments and increase it
@@ -112,6 +128,7 @@ def decrease_value():
     response = jsonify({"value": new_value})
     response.headers.add("Access-Control-Allow-Origin", "*")
     return response
+
 
 
 

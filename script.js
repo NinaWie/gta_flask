@@ -39,10 +39,29 @@ function demo_post_ajax() {
 }
 
 // TODO TASK 4 - call Python backend for decreasing or increasing the value
-// function decrease_value() {
-//     ...
-// }
+function increase_value() {
+    var num = document.getElementById("num").innerHTML
+    console.log(num)
+    fetch('http://localhost:8989/increase?num=' + num)
+        .then(response => response.json())
+        .then(json => {
+            console.log(json);
+            var newnum = JSON.stringify(json);
+            console.log(newnum);
+            document.getElementById("num").innerHTML = newnum
+        })
 
-// function increase_value() {
-//     ...
-// }
+}
+
+function decrease_value() {
+    var num = document.getElementById("num").innerHTML
+    console.log(num)
+    fetch('http://localhost:8989/decrease?num=' + num)
+        .then(response => response.json())
+        .then(json => {
+            console.log(json);
+            var newnum = JSON.stringify(json);
+            console.log(newnum);
+            document.getElementById("num").innerHTML = newnum
+        })
+}

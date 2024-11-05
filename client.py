@@ -19,6 +19,16 @@ def test_project_coords():
 
 
 # TODO: test task 3
+def test_project_to_crs():
+    json_data = (4326, 47.324, 8.342)
+    print("input:", json_data, "convert to le crs")
+    r = requests.post(host_link + "project_to_crs", json=json_data)
+    print(r.json())
 
 if __name__ == "__main__":
+    print("test using post:")
     test_using_post()
+    print("test project coords:")
+    test_project_coords()
+    print("test project to crs:")
+    test_project_to_crs()
